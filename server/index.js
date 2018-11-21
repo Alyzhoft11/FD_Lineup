@@ -155,8 +155,23 @@ function genLineup(data) {
 }
 
 app.get("/", (req, res) => {
-  res.json({
-    message: "Hello World"
+  conn.pool.connect((err, client, done) => {
+    client.query("BEGIN", async err => {
+      const allQuery = "SELECT * FROM FFN";
+      const { rows } = await client.query(allQuery);
+
+      res.json({
+        rows
+      });
+    });
+  });
+});
+
+app.get("/deleteffn", (req, res) => {
+  querries.deleteFFN().then(result => {
+    res.json({
+      result
+    });
   });
 });
 
@@ -215,15 +230,15 @@ app.get("/frresults", async (req, res) => {
   conn.pool.connect((err, client, done) => {
     client.query("BEGIN", async err => {
       const QBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by value limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by ptscalc limit 10";
       const RBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by value limit 20";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by ptscalc limit 20";
       const WRQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by value limit 30";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by ptscalc limit 30";
       const TEQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by value limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by ptscalc limit 10";
       const DEFQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 5 and fr.status is null order by value limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 5 and fr.status is null order by ptscalc limit 10";
       const qb = await client.query(QBQuery);
       const rb = await client.query(RBQuery);
       const wr = await client.query(WRQuery);

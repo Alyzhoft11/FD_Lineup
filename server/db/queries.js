@@ -24,11 +24,22 @@ const insert = async results => {
           client.query(insertQuery, (err, res) => {
             console.log(err, res);
           });
-          client.query("COMMIT", (err, res) => {
-            return res;
-          });
+          client.query("COMMIT", (err, res) => {});
         }
       }
+    });
+  });
+};
+
+const deleteFFN = async () => {
+  conn.pool.connect((err, client, done) => {
+    client.query("BEGIN", err => {
+      client.query("DELETE FROM ffn", (err, res) => {
+        client.query("COMMIT", (err, res) => {
+          console.log(res, err);
+          return res;
+        });
+      });
     });
   });
 };
@@ -45,5 +56,6 @@ function select() {
 
 module.exports = {
   insert,
-  select
+  select,
+  deleteFFN
 };
