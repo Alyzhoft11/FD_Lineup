@@ -1,0 +1,74 @@
+[
+{
+name: "Jameis Winston",
+id: "2812",
+position: "QB",
+ptscalc: "21.00",
+salary: 7500,
+value: "357.1428571428571429"
+},
+{
+name: "James Conner",
+id: "3339",
+position: "RB",
+ptscalc: "21.33",
+salary: 7900,
+value: "370.3703703703703704"
+},
+{
+name: "LeSean McCoy",
+id: "810",
+position: "RB",
+ptscalc: "12.67",
+salary: 6000,
+value: "473.5595895816890292"
+},
+{
+name: "Antonio Brown",
+id: "1142",
+position: "WR",
+ptscalc: "22.33",
+salary: 8500,
+value: "380.6538289296909987"
+},
+{
+name: "Courtland Sutton",
+id: "3590",
+position: "WR",
+ptscalc: "11.67",
+salary: 5400,
+value: "462.7249357326478149"
+},
+{
+name: "Adam Humphries",
+id: "2979",
+position: "WR",
+ptscalc: "11.00",
+salary: 5600,
+value: "509.0909090909090909"
+},
+{
+name: "Zach Ertz",
+id: "2173",
+position: "TE",
+ptscalc: "18.33",
+salary: 7600,
+value: "414.6208401527550464"
+},
+{
+name: "Christian McCaffrey",
+id: "3379",
+position: "RB",
+ptscalc: "21.67",
+salary: 8400,
+value: "387.6326718966312875"
+},
+{
+name: "Cleveland Browns",
+id: "1060",
+position: "DEF",
+ptscalc: "5.67",
+salary: 3100,
+value: "546.7372134038800705"
+}
+]

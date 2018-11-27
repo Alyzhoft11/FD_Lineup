@@ -1,9 +1,10 @@
 import React from "react";
 import { render } from "react-dom";
+import Results from "./Results";
 
 class App extends React.Component {
   render() {
-    return <h1>Connected</h1>;
+    return <Results />;
   }
 }
 

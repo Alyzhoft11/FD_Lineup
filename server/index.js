@@ -32,6 +32,7 @@ function genSGLineup(data) {
   const k = data.K;
   let salary = 0;
   let pts = 0;
+  let mvpPts = 0;
   let maxPts = 0;
   let roster = [];
 
@@ -58,9 +59,11 @@ function genSGLineup(data) {
   }
 
   for (let m = 0; m < atSalaryCap.length; m++) {
-    for (let n = 0; n < atSalaryCap[n].length; n++) {
+    for (let n = 1; n < atSalaryCap[n].length; n++) {
+      mvpPts = parseFloat(atSalaryCap[m][0].ptscalc) * 1.5;
       pts += parseFloat(atSalaryCap[m][n].ptscalc);
     }
+    pts += mvpPts;
     if (maxPts == 0) {
       maxPts = pts;
       roster = atSalaryCap[m];
@@ -69,8 +72,88 @@ function genSGLineup(data) {
       roster = atSalaryCap[m];
     }
     pts = 0;
+    mvpPts = 0;
   }
+  console.log(maxPts);
+  return roster;
+}
 
+function getLineup(qb, rb, rb2, wr, wr2, wr3, te, flex, def) {
+  tempRoster = [];
+  let salary = 0;
+  let maxPts = 0;
+  let pts = 0;
+  let test2 = [];
+  let count = 0;
+  for (let i = 0; i < qb.length; i++) {
+    for (let j = 0; j < rb.length; j++) {
+      for (let k = 0; k < rb2.length; k++) {
+        for (let l = 0; l < wr.length; l++) {
+          for (let m = 0; m < wr2.length; m++) {
+            for (let n = 0; n < wr3.length; n++) {
+              for (let o = 0; o < te.length; o++) {
+                for (let p = 0; p < flex.length; p++) {
+                  for (let q = 0; q < def.length; q++) {
+                    tempRoster.push(
+                      qb[i],
+                      rb[j],
+                      rb2[k],
+                      wr[l],
+                      wr2[m],
+                      wr3[n],
+                      te[o],
+                      flex[p],
+                      def[q]
+                    );
+                    test2 = tempRoster;
+                    const flexPlayer = test2[7].id;
+                    if (
+                      flexPlayer != test2[1].id &&
+                      flexPlayer != test2[2].id &&
+                      flexPlayer != test2[3].id &&
+                      flexPlayer != test2[4].id &&
+                      flexPlayer != test2[5].id &&
+                      flexPlayer != test2[6].id
+                    ) {
+                      for (let z = 0; z < test2.length; z++) {
+                        salary += test2[z].salary;
+                      }
+                      if (salary <= 60000) {
+                        for (let n = 0; n < test2.length; n++) {
+                          pts += parseFloat(test2[n].ptscalc);
+                        }
+                        if (maxPts == 0) {
+                          maxPts = pts;
+                          roster = test2;
+                          test2 = [];
+                          tempRoster = [];
+                        } else if (maxPts < pts) {
+                          maxPts = pts;
+                          roster = test2;
+                          test2 = [];
+                          tempRoster = [];
+                        }
+                        pts = 0;
+
+                        salary = 0;
+                      } else {
+                        test2 = [];
+                        tempRoster = [];
+                        salary = 0;
+                      }
+                    } else {
+                      test2 = [];
+                      tempRoster = [];
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   return roster;
 }
 
@@ -86,72 +169,12 @@ function genLineup(data) {
   const wr3 = data.WR;
   const te = data.TE;
   const def = data.DEF;
-  let salary = 0;
-  let pts = 0;
-  let maxPts = 0;
-  let roster = [];
 
   const flex = rb.concat(wr, te);
 
-  const goodRosters = [];
-  const atSalaryCap = [];
+  const lineupResults = getLineup(qb, rb, rb2, wr, wr2, wr3, te, flex, def);
 
-  const lineUps = cmb.cartesianProduct(
-    qb,
-    rb,
-    rb2,
-    wr,
-    wr2,
-    wr3,
-    te,
-    flex,
-    def
-  );
-
-  const lineupResults = lineUps.toArray();
-
-  for (let i = 0; i < lineupResults.length; i++) {
-    const flexPlayer = lineupResults[i][7].id;
-    if (
-      flexPlayer !=
-      (lineupResults[i][1].id ||
-        lineupResults[i][2].id ||
-        lineupResults[i][3].id ||
-        lineupResults[i][4].id ||
-        lineupResults[i][5].id ||
-        lineupResults[i][6].id)
-    ) {
-      goodRosters.push(lineupResults[i]);
-    }
-  }
-
-  for (let i = 0; i < goodRosters.length; i++) {
-    for (let j = 0; j < goodRosters[i].length; j++) {
-      salary += goodRosters[i][j].salary;
-    }
-    if (salary <= 60000) {
-      atSalaryCap.push(goodRosters[i]);
-      salary = 0;
-    } else {
-      salary = 0;
-    }
-  }
-
-  for (let m = 0; m < atSalaryCap.length; m++) {
-    for (let n = 0; n < atSalaryCap[n].length; n++) {
-      pts += parseFloat(atSalaryCap[m][n].ptscalc);
-    }
-    if (maxPts == 0) {
-      maxPts = pts;
-      roster = atSalaryCap[m];
-    } else if (maxPts < pts) {
-      maxPts = pts;
-      roster = atSalaryCap[m];
-    }
-    pts = 0;
-  }
-
-  return roster;
+  return lineupResults;
 }
 
 app.get("/", (req, res) => {
@@ -230,15 +253,15 @@ app.get("/frresults", async (req, res) => {
   conn.pool.connect((err, client, done) => {
     client.query("BEGIN", async err => {
       const QBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by ptscalc limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by value limit 10";
       const RBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by ptscalc limit 20";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by value limit 20";
       const WRQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by ptscalc limit 30";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by value limit 30";
       const TEQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by ptscalc limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by value limit 10";
       const DEFQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 5 and fr.status is null order by ptscalc limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 1 and fr.status is null order by value limit 10";
       const qb = await client.query(QBQuery);
       const rb = await client.query(RBQuery);
       const wr = await client.query(WRQuery);
@@ -253,6 +276,73 @@ app.get("/frresults", async (req, res) => {
         DEF: def.rows
       };
       // res.json(results);
+      const roster = await genLineup(results);
+
+      res.json(roster);
+    });
+  });
+});
+
+app.get("/lgresults", async (req, res) => {
+  conn.pool.connect((err, client, done) => {
+    client.query("BEGIN", async err => {
+      const QBQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
+      const RBQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 20";
+      const WRQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 30";
+      const TEQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
+      const DEFQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 1 and fr.status is null order by ptscalc desc limit 10";
+      const qb = await client.query(QBQuery);
+      const rb = await client.query(RBQuery);
+      const wr = await client.query(WRQuery);
+      const te = await client.query(TEQuery);
+      const def = await client.query(DEFQuery);
+
+      const results = {
+        QB: qb.rows,
+        RB: rb.rows,
+        WR: wr.rows,
+        TE: te.rows,
+        DEF: def.rows
+      };
+      // res.json(results);
+      const roster = await genLineup(results);
+
+      res.json(roster);
+    });
+  });
+});
+
+app.get("/egresults", async (req, res) => {
+  conn.pool.connect((err, client, done) => {
+    client.query("BEGIN", async err => {
+      const QBQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by value limit 10";
+      const RBQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by value limit 20";
+      const WRQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by value limit 30";
+      const TEQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by value limit 10";
+      const DEFQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 1 and fr.status is null order by value limit 10";
+      const qb = await client.query(QBQuery);
+      const rb = await client.query(RBQuery);
+      const wr = await client.query(WRQuery);
+      const te = await client.query(TEQuery);
+      const def = await client.query(DEFQuery);
+
+      const results = {
+        QB: qb.rows,
+        RB: rb.rows,
+        WR: wr.rows,
+        TE: te.rows,
+        DEF: def.rows
+      };
       const roster = await genLineup(results);
 
       res.json(roster);

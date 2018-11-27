@@ -1,0 +1,74 @@
+[
+  {
+  name: "Jameis Winston",
+  id: "2812",
+  position: "QB",
+  ptscalc: "21.00",
+  salary: 7500,
+  value: "357.1428571428571429"
+  },
+  {
+  name: "Saquon Barkley",
+  id: "3582",
+  position: "RB",
+  ptscalc: "23.33",
+  salary: 9000,
+  value: "385.7693956279468495"
+  },
+  {
+  name: "Duke Johnson",
+  id: "2781",
+  position: "RB",
+  ptscalc: "13.33",
+  salary: 5600,
+  value: "420.1050262565641410"
+  },
+  {
+  name: "Antonio Brown",
+  id: "1142",
+  position: "WR",
+  ptscalc: "22.33",
+  salary: 8500,
+  value: "380.6538289296909987"
+  },
+  {
+  name: "D.J. Moore",
+  id: "3612",
+  position: "WR",
+  ptscalc: "14.00",
+  salary: 5800,
+  value: "414.2857142857142857"
+  },
+  {
+  name: "Quincy Enunwa",
+  id: "2451",
+  position: "WR",
+  ptscalc: "10.00",
+  salary: 5000,
+  value: "500.0000000000000000"
+  },
+  {
+  name: "Zach Ertz",
+  id: "2173",
+  position: "TE",
+  ptscalc: "18.33",
+  salary: 7600,
+  value: "414.6208401527550464"
+  },
+  {
+  name: "James Conner",
+  id: "3339",
+  position: "RB",
+  ptscalc: "21.33",
+  salary: 7900,
+  value: "370.3703703703703704"
+  },
+  {
+  name: "Cleveland Browns",
+  id: "1060",
+  position: "DEF",
+  ptscalc: "5.67",
+  salary: 3100,
+  value: "546.7372134038800705"
+  }
+  ]
