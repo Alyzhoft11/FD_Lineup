@@ -6,9 +6,9 @@ const insert = async results => {
       for (let i = 0; i < results.length; i++) {
         for (let j = 0; j < results[i].length; j++) {
           const ptscalc =
-            (parseInt(results[i][j].pprHigh) +
-              parseInt(results[i][j].ppr) +
-              parseInt(results[i][j].pprLow)) /
+            (parseFloat(results[i][j].pprHigh) +
+              parseFloat(results[i][j].ppr) +
+              parseFloat(results[i][j].pprLow)) /
             3;
           const insertQuery = `INSERT INTO ffn(id, name, position, ptscalc, team, standard, standardlow, standardhigh, ppr, pprlow, pprhigh, injury) VALUES(${
             results[i][j].playerId

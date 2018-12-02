@@ -3,72 +3,72 @@
 name: "Jameis Winston",
 id: "2812",
 position: "QB",
-ptscalc: "21.00",
+ptscalc: "22.67",
 salary: 7500,
-value: "357.1428571428571429"
+value: "330.8337009263343626"
 },
 {
-name: "James Conner",
-id: "3339",
+name: "Spencer Ware",
+id: "2245",
 position: "RB",
-ptscalc: "21.33",
-salary: 7900,
-value: "370.3703703703703704"
+ptscalc: "17.34",
+salary: 5200,
+value: "299.8846597462514418"
 },
 {
-name: "LeSean McCoy",
-id: "810",
+name: "T.J. Yeldon",
+id: "2878",
 position: "RB",
-ptscalc: "12.67",
-salary: 6000,
-value: "473.5595895816890292"
+ptscalc: "13.93",
+salary: 4800,
+value: "344.5800430725053841"
 },
 {
-name: "Antonio Brown",
-id: "1142",
+name: "Adam Thielen",
+id: "2330",
 position: "WR",
-ptscalc: "22.33",
-salary: 8500,
-value: "380.6538289296909987"
+ptscalc: "23.40",
+salary: 8100,
+value: "346.1538461538461538"
 },
 {
-name: "Courtland Sutton",
-id: "3590",
+name: "Kenny Golladay",
+id: "3347",
 position: "WR",
-ptscalc: "11.67",
-salary: 5400,
-value: "462.7249357326478149"
+ptscalc: "19.03",
+salary: 7300,
+value: "383.6048344718864950"
 },
 {
-name: "Adam Humphries",
-id: "2979",
+name: "Robert Woods",
+id: "2122",
 position: "WR",
-ptscalc: "11.00",
-salary: 5600,
-value: "509.0909090909090909"
+ptscalc: "18.23",
+salary: 7300,
+value: "400.4388370817334065"
 },
 {
-name: "Zach Ertz",
-id: "2173",
+name: "Travis Kelce",
+id: "2198",
 position: "TE",
-ptscalc: "18.33",
-salary: 7600,
-value: "414.6208401527550464"
+ptscalc: "20.89",
+salary: 7800,
+value: "373.3843944471038775"
 },
 {
 name: "Christian McCaffrey",
 id: "3379",
 position: "RB",
-ptscalc: "21.67",
-salary: 8400,
-value: "387.6326718966312875"
+ptscalc: "24.67",
+salary: 8800,
+value: "356.7085528982569923"
 },
 {
 name: "Cleveland Browns",
 id: "1060",
 position: "DEF",
-ptscalc: "5.67",
-salary: 3100,
-value: "546.7372134038800705"
+ptscalc: "7.03",
+salary: 3200,
+value: "455.1920341394025605"
 }
 ]

@@ -58,6 +58,7 @@ class Results extends React.Component {
     fetch(url)
       .then(res => res.json())
       .then(results => {
+        console.log(results);
         results.map(result => {
           totalPts += parseFloat(result.ptscalc);
         });
@@ -96,6 +97,9 @@ class Results extends React.Component {
           </button>
           <button className="btn btn-primary mt-5" onClick={this.getLGResults}>
             Late Game Results
+          </button>
+          <button className="btn btn-primary mt-5" onClick={this.getFResults}>
+            Full Results
           </button>
         </div>
       );

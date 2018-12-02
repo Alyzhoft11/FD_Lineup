@@ -12,12 +12,12 @@ app.use(cors());
 app.use(morgan("tiny"));
 
 urls = [
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/QB/12/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/RB/12/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/WR/12/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/TE/12/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/K/12/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/DEF/12/1"
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/QB/13/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/RB/13/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/WR/13/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/TE/13/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/K/13/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/DEF/13/1"
 ];
 
 function genSGLineup(data) {
@@ -74,7 +74,7 @@ function genSGLineup(data) {
     pts = 0;
     mvpPts = 0;
   }
-  console.log(maxPts);
+
   return roster;
 }
 
@@ -115,31 +115,51 @@ function getLineup(qb, rb, rb2, wr, wr2, wr3, te, flex, def) {
                       flexPlayer != test2[5].id &&
                       flexPlayer != test2[6].id
                     ) {
-                      for (let z = 0; z < test2.length; z++) {
-                        salary += test2[z].salary;
-                      }
-                      if (salary <= 60000) {
-                        for (let n = 0; n < test2.length; n++) {
-                          pts += parseFloat(test2[n].ptscalc);
-                        }
-                        if (maxPts == 0) {
-                          maxPts = pts;
-                          roster = test2;
-                          test2 = [];
-                          tempRoster = [];
-                        } else if (maxPts < pts) {
-                          maxPts = pts;
-                          roster = test2;
-                          test2 = [];
-                          tempRoster = [];
-                        }
-                        pts = 0;
+                      if (
+                        test2[1].id != test2[2].id &&
+                        test2[2].id != test2[1].id
+                      ) {
+                        if (
+                          test2[3].id != test2[4].id &&
+                          test2[3].id != test2[5].id &&
+                          test2[4].id != test2[3].id &&
+                          test2[4].id != test2[5].id &&
+                          test2[5].id != test2[3].id &&
+                          test2[5].id != test2[4].id
+                        ) {
+                          for (let z = 0; z < test2.length; z++) {
+                            salary += test2[z].salary;
+                          }
+                          if (salary <= 60000) {
+                            for (let n = 0; n < test2.length; n++) {
+                              pts += parseFloat(test2[n].ptscalc);
+                            }
+                            if (maxPts == 0) {
+                              maxPts = pts;
+                              roster = test2;
+                              test2 = [];
+                              tempRoster = [];
+                            } else if (maxPts < pts) {
+                              maxPts = pts;
+                              roster = test2;
+                              test2 = [];
+                              tempRoster = [];
+                            }
+                            pts = 0;
 
-                        salary = 0;
+                            salary = 0;
+                          } else {
+                            test2 = [];
+                            tempRoster = [];
+                            salary = 0;
+                          }
+                        } else {
+                          test2 = [];
+                          tempRoster = [];
+                        }
                       } else {
                         test2 = [];
                         tempRoster = [];
-                        salary = 0;
                       }
                     } else {
                       test2 = [];
@@ -158,14 +178,11 @@ function getLineup(qb, rb, rb2, wr, wr2, wr3, te, flex, def) {
 }
 
 function genLineup(data) {
-  const half = Math.ceil(data.RB.length / 2);
-  const third = Math.ceil(data.WR.length / 3);
-
   const qb = data.QB;
-  const rb = data.RB.splice(0, half);
+  const rb = data.RB;
   const rb2 = data.RB;
-  const wr = data.WR.splice(0, third);
-  const wr2 = data.WR.splice(0, third);
+  const wr = data.WR;
+  const wr2 = data.WR;
   const wr3 = data.WR;
   const te = data.TE;
   const def = data.DEF;
@@ -243,6 +260,7 @@ app.get("/sgresults", async (req, res) => {
         K: k.rows
       };
       const roster = await genSGLineup(results);
+      done();
 
       res.json(roster);
     });
@@ -255,9 +273,9 @@ app.get("/frresults", async (req, res) => {
       const QBQuery =
         "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by value limit 10";
       const RBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by value limit 20";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by value limit 10";
       const WRQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by value limit 30";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by value limit 10";
       const TEQuery =
         "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by value limit 10";
       const DEFQuery =
@@ -277,25 +295,26 @@ app.get("/frresults", async (req, res) => {
       };
       // res.json(results);
       const roster = await genLineup(results);
+      done();
 
       res.json(roster);
     });
   });
 });
 
-app.get("/lgresults", async (req, res) => {
+app.get("/frresultspts", async (req, res) => {
   conn.pool.connect((err, client, done) => {
     client.query("BEGIN", async err => {
       const QBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
       const RBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 20";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 20";
       const WRQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 30";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 30";
       const TEQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
       const DEFQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 1 and fr.status is null order by ptscalc desc limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_frdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 1 and fr.status is null order by ptscalc desc limit 10";
       const qb = await client.query(QBQuery);
       const rb = await client.query(RBQuery);
       const wr = await client.query(WRQuery);
@@ -311,8 +330,64 @@ app.get("/lgresults", async (req, res) => {
       };
       // res.json(results);
       const roster = await genLineup(results);
+      done();
 
       res.json(roster);
+    });
+  });
+});
+
+app.get("/lgresults", async (req, res) => {
+  conn.pool.connect((err, client, done) => {
+    client.query("BEGIN", async err => {
+      const lgResultsQuery = "SELECT * from lgresults";
+
+      const QBQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
+      const RBQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 20";
+      const WRQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 30";
+      const TEQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
+      const DEFQuery =
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 1 and fr.status is null order by ptscalc desc limit 10";
+
+      const lgresults = await client.query(lgResultsQuery);
+
+      if (lgresults.rowCount == 0) {
+        const qb = await client.query(QBQuery);
+        const rb = await client.query(RBQuery);
+        const wr = await client.query(WRQuery);
+        const te = await client.query(TEQuery);
+        const def = await client.query(DEFQuery);
+
+        const results = {
+          QB: qb.rows,
+          RB: rb.rows,
+          WR: wr.rows,
+          TE: te.rows,
+          DEF: def.rows
+        };
+        const roster = await genLineup(results);
+
+        for (let i = 0; i < roster.length; i++) {
+          const insertLGResults = `INSERT INTO lgresults(id, name, position, ptscalc, salary, value) VALUES(${
+            roster[i].id
+          }, \'${roster[i].name}\', \'${roster[i].position}\', ${
+            roster[i].ptscalc
+          }, ${roster[i].salary}, ${roster[i].value}) `;
+
+          client.query(insertLGResults, (err, res) => {
+            console.log(err, res);
+          });
+          client.query("COMMIT", (err, res) => {});
+        }
+        done();
+        res.json(roster);
+      } else {
+        res.json(lgresults.rows);
+      }
     });
   });
 });
@@ -323,9 +398,9 @@ app.get("/egresults", async (req, res) => {
       const QBQuery =
         "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by value limit 10";
       const RBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by value limit 20";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by value limit 10";
       const WRQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by value limit 30";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by value limit 10";
       const TEQuery =
         "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_earlydata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by value limit 10";
       const DEFQuery =
@@ -344,7 +419,7 @@ app.get("/egresults", async (req, res) => {
         DEF: def.rows
       };
       const roster = await genLineup(results);
-
+      done();
       res.json(roster);
     });
   });
