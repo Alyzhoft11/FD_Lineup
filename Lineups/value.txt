@@ -1,74 +1,74 @@
 [
 {
-name: "Jameis Winston",
-id: "2812",
+name: "Tom Brady",
+id: "13",
 position: "QB",
-ptscalc: "22.67",
-salary: 7500,
-value: "330.8337009263343626"
+ptscalc: "22.07",
+salary: 7900,
+value: "357.9519710013593113"
 },
 {
-name: "Spencer Ware",
-id: "2245",
+name: "Dalvin Cook",
+id: "3354",
 position: "RB",
-ptscalc: "17.34",
-salary: 5200,
-value: "299.8846597462514418"
+ptscalc: "17.07",
+salary: 6200,
+value: "363.2103104862331576"
 },
 {
-name: "T.J. Yeldon",
-id: "2878",
+name: "Ezekiel Elliott",
+id: "3037",
 position: "RB",
-ptscalc: "13.93",
-salary: 4800,
-value: "344.5800430725053841"
-},
-{
-name: "Adam Thielen",
-id: "2330",
-position: "WR",
-ptscalc: "23.40",
-salary: 8100,
-value: "346.1538461538461538"
-},
-{
-name: "Kenny Golladay",
-id: "3347",
-position: "WR",
-ptscalc: "19.03",
-salary: 7300,
-value: "383.6048344718864950"
-},
-{
-name: "Robert Woods",
-id: "2122",
-position: "WR",
-ptscalc: "18.23",
-salary: 7300,
-value: "400.4388370817334065"
-},
-{
-name: "Travis Kelce",
-id: "2198",
-position: "TE",
-ptscalc: "20.89",
-salary: 7800,
-value: "373.3843944471038775"
-},
-{
-name: "Christian McCaffrey",
-id: "3379",
-position: "RB",
-ptscalc: "24.67",
+ptscalc: "23.50",
 salary: 8800,
-value: "356.7085528982569923"
+value: "374.4680851063829787"
 },
 {
-name: "Cleveland Browns",
-id: "1060",
+name: "Amari Cooper",
+id: "2756",
+position: "WR",
+ptscalc: "18.97",
+salary: 6600,
+value: "347.9177648919346336"
+},
+{
+name: "Stefon Diggs",
+id: "2794",
+position: "WR",
+ptscalc: "19.85",
+salary: 7700,
+value: "387.9093198992443325"
+},
+{
+name: "Julian Edelman",
+id: "832",
+position: "WR",
+ptscalc: "17.63",
+salary: 7200,
+value: "408.3947816222348270"
+},
+{
+name: "Eric Ebron",
+id: "2587",
+position: "TE",
+ptscalc: "16.63",
+salary: 6500,
+value: "390.8598917618761275"
+},
+{
+name: "Sterling Shepard",
+id: "3042",
+position: "WR",
+ptscalc: "14.21",
+salary: 5200,
+value: "365.9394792399718508"
+},
+{
+name: "Minnesota Vikings",
+id: "1040",
 position: "DEF",
-ptscalc: "7.03",
-salary: 3200,
-value: "455.1920341394025605"
+ptscalc: "7.70",
+salary: 3900,
+value: "506.4935064935064935"
 }
 ]

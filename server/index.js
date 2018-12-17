@@ -12,12 +12,12 @@ app.use(cors());
 app.use(morgan("tiny"));
 
 urls = [
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/QB/13/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/RB/13/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/WR/13/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/TE/13/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/K/13/1",
-  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/DEF/13/1"
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/QB/15/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/RB/15/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/WR/15/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/TE/15/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/K/15/1",
+  "https://www.fantasyfootballnerd.com/service/weekly-rankings/json/sv3f3je6s88k/DEF/15/1"
 ];
 
 function genSGLineup(data) {
@@ -78,7 +78,10 @@ function genSGLineup(data) {
   return roster;
 }
 
-function getLineup(qb, rb, rb2, wr, wr2, wr3, te, flex, def) {
+function getLineup(qb, rb, wr, te, flex, def) {
+  const rbCombos = cmb.combination(rb, 2).toArray();
+  const wrCombos = cmb.combination(wr, 3).toArray();
+
   tempRoster = [];
   let salary = 0;
   let maxPts = 0;
@@ -86,87 +89,62 @@ function getLineup(qb, rb, rb2, wr, wr2, wr3, te, flex, def) {
   let test2 = [];
   let count = 0;
   for (let i = 0; i < qb.length; i++) {
-    for (let j = 0; j < rb.length; j++) {
-      for (let k = 0; k < rb2.length; k++) {
-        for (let l = 0; l < wr.length; l++) {
-          for (let m = 0; m < wr2.length; m++) {
-            for (let n = 0; n < wr3.length; n++) {
-              for (let o = 0; o < te.length; o++) {
-                for (let p = 0; p < flex.length; p++) {
-                  for (let q = 0; q < def.length; q++) {
-                    tempRoster.push(
-                      qb[i],
-                      rb[j],
-                      rb2[k],
-                      wr[l],
-                      wr2[m],
-                      wr3[n],
-                      te[o],
-                      flex[p],
-                      def[q]
-                    );
-                    test2 = tempRoster;
-                    const flexPlayer = test2[7].id;
-                    if (
-                      flexPlayer != test2[1].id &&
-                      flexPlayer != test2[2].id &&
-                      flexPlayer != test2[3].id &&
-                      flexPlayer != test2[4].id &&
-                      flexPlayer != test2[5].id &&
-                      flexPlayer != test2[6].id
-                    ) {
-                      if (
-                        test2[1].id != test2[2].id &&
-                        test2[2].id != test2[1].id
-                      ) {
-                        if (
-                          test2[3].id != test2[4].id &&
-                          test2[3].id != test2[5].id &&
-                          test2[4].id != test2[3].id &&
-                          test2[4].id != test2[5].id &&
-                          test2[5].id != test2[3].id &&
-                          test2[5].id != test2[4].id
-                        ) {
-                          for (let z = 0; z < test2.length; z++) {
-                            salary += test2[z].salary;
-                          }
-                          if (salary <= 60000) {
-                            for (let n = 0; n < test2.length; n++) {
-                              pts += parseFloat(test2[n].ptscalc);
-                            }
-                            if (maxPts == 0) {
-                              maxPts = pts;
-                              roster = test2;
-                              test2 = [];
-                              tempRoster = [];
-                            } else if (maxPts < pts) {
-                              maxPts = pts;
-                              roster = test2;
-                              test2 = [];
-                              tempRoster = [];
-                            }
-                            pts = 0;
+    for (let j = 0; j < rbCombos.length; j++) {
+      for (let l = 0; l < wrCombos.length; l++) {
+        for (let o = 0; o < te.length; o++) {
+          for (let p = 0; p < flex.length; p++) {
+            for (let q = 0; q < def.length; q++) {
+              tempRoster.push(
+                qb[i],
+                rbCombos[j][0],
+                rbCombos[j][1],
+                wrCombos[l][0],
+                wrCombos[l][1],
+                wrCombos[l][2],
+                te[o],
+                flex[p],
+                def[q]
+              );
 
-                            salary = 0;
-                          } else {
-                            test2 = [];
-                            tempRoster = [];
-                            salary = 0;
-                          }
-                        } else {
-                          test2 = [];
-                          tempRoster = [];
-                        }
-                      } else {
-                        test2 = [];
-                        tempRoster = [];
-                      }
-                    } else {
-                      test2 = [];
-                      tempRoster = [];
-                    }
-                  }
+              test2 = tempRoster;
+              const flexPlayer = test2[7].id;
+              if (
+                flexPlayer != test2[1].id &&
+                flexPlayer != test2[2].id &&
+                flexPlayer != test2[3].id &&
+                flexPlayer != test2[4].id &&
+                flexPlayer != test2[5].id &&
+                flexPlayer != test2[6].id
+              ) {
+                for (let z = 0; z < test2.length; z++) {
+                  salary += test2[z].salary;
                 }
+                if (salary <= 60000) {
+                  for (let n = 0; n < test2.length; n++) {
+                    pts += parseFloat(test2[n].ptscalc);
+                  }
+                  if (maxPts == 0) {
+                    maxPts = pts;
+                    roster = test2;
+                    test2 = [];
+                    tempRoster = [];
+                  } else if (maxPts < pts) {
+                    maxPts = pts;
+                    roster = test2;
+                    test2 = [];
+                    tempRoster = [];
+                  }
+                  pts = 0;
+
+                  salary = 0;
+                } else {
+                  test2 = [];
+                  tempRoster = [];
+                  salary = 0;
+                }
+              } else {
+                test2 = [];
+                tempRoster = [];
               }
             }
           }
@@ -180,7 +158,6 @@ function getLineup(qb, rb, rb2, wr, wr2, wr3, te, flex, def) {
 function genLineup(data) {
   const qb = data.QB;
   const rb = data.RB;
-  const rb2 = data.RB;
   const wr = data.WR;
   const wr2 = data.WR;
   const wr3 = data.WR;
@@ -189,7 +166,7 @@ function genLineup(data) {
 
   const flex = rb.concat(wr, te);
 
-  const lineupResults = getLineup(qb, rb, rb2, wr, wr2, wr3, te, flex, def);
+  const lineupResults = getLineup(qb, rb, wr, te, flex, def);
 
   return lineupResults;
 }
@@ -343,15 +320,15 @@ app.get("/lgresults", async (req, res) => {
       const lgResultsQuery = "SELECT * from lgresults";
 
       const QBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'QB' and ptscalc > 5 and fr.status is null order by value limit 10";
       const RBQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 20";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'RB' and ptscalc > 5 and fr.status is null order by value limit 10";
       const WRQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 30";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'WR' and ptscalc > 5 and fr.status is null order by value limit 10";
       const TEQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by ptscalc desc limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'TE' and ptscalc > 5 and fr.status is null order by value limit 10";
       const DEFQuery =
-        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 1 and fr.status is null order by ptscalc desc limit 10";
+        "select name, ffn.id, ffn.position, ptscalc, salary, (salary/ptscalc) as value from ffn join fanduel_lgdata fr on fr.nickname = ffn.name and ffn.position = 'DEF' and ptscalc > 1 and fr.status is null order by value limit 10";
 
       const lgresults = await client.query(lgResultsQuery);
 

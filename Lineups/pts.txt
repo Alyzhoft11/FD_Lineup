@@ -3,72 +3,72 @@
 name: "Jameis Winston",
 id: "2812",
 position: "QB",
-ptscalc: "22.67",
-salary: 7500,
-value: "330.8337009263343626"
+ptscalc: "19.27",
+salary: 7000,
+value: "363.2589517384535547"
 },
 {
-name: "Christian McCaffrey",
-id: "3379",
+name: "Ezekiel Elliott",
+id: "3037",
 position: "RB",
-ptscalc: "24.67",
+ptscalc: "23.50",
 salary: 8800,
-value: "356.7085528982569923"
+value: "374.4680851063829787"
 },
 {
-name: "Spencer Ware",
-id: "2245",
+name: "Dalvin Cook",
+id: "3354",
 position: "RB",
-ptscalc: "17.34",
-salary: 5200,
-value: "299.8846597462514418"
+ptscalc: "17.07",
+salary: 6200,
+value: "363.2103104862331576"
 },
 {
-name: "Adam Thielen",
-id: "2330",
+name: "JuJu Smith-Schuster",
+id: "3340",
 position: "WR",
-ptscalc: "23.40",
-salary: 8100,
-value: "346.1538461538461538"
+ptscalc: "19.87",
+salary: 7800,
+value: "392.5515853044791142"
 },
 {
-name: "Kenny Golladay",
-id: "3347",
+name: "Stefon Diggs",
+id: "2794",
 position: "WR",
-ptscalc: "19.03",
-salary: 7300,
-value: "383.6048344718864950"
+ptscalc: "19.85",
+salary: 7700,
+value: "387.9093198992443325"
 },
 {
-name: "Robert Woods",
-id: "2122",
+name: "Amari Cooper",
+id: "2756",
 position: "WR",
-ptscalc: "18.23",
-salary: 7300,
-value: "400.4388370817334065"
+ptscalc: "18.97",
+salary: 6600,
+value: "347.9177648919346336"
 },
 {
 name: "Eric Ebron",
 id: "2587",
 position: "TE",
-ptscalc: "15.47",
-salary: 5600,
-value: "361.9909502262443439"
+ptscalc: "16.63",
+salary: 6500,
+value: "390.8598917618761275"
 },
 {
-name: "Emmanuel Sanders",
-id: "1168",
-position: "WR",
-ptscalc: "17.37",
-salary: 7000,
-value: "402.9936672423719056"
+name: "Austin Hooper",
+id: "3115",
+position: "TE",
+ptscalc: "11.77",
+salary: 5500,
+value: "467.2897196261682243"
 },
 {
-name: "Cleveland Browns",
-id: "1060",
+name: "Minnesota Vikings",
+id: "1040",
 position: "DEF",
-ptscalc: "7.03",
-salary: 3200,
-value: "455.1920341394025605"
+ptscalc: "7.70",
+salary: 3900,
+value: "506.4935064935064935"
 }
 ]
