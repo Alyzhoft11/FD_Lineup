@@ -1,5 +1,5 @@
-[
 {
+qb: {
 name: "Tom Brady",
 id: "13",
 position: "QB",
@@ -7,7 +7,7 @@ ptscalc: "22.07",
 salary: 7900,
 value: "357.9519710013593113"
 },
-{
+rb1: {
 name: "Dalvin Cook",
 id: "3354",
 position: "RB",
@@ -15,7 +15,7 @@ ptscalc: "17.07",
 salary: 6200,
 value: "363.2103104862331576"
 },
-{
+rb2: {
 name: "Ezekiel Elliott",
 id: "3037",
 position: "RB",
@@ -23,7 +23,7 @@ ptscalc: "23.50",
 salary: 8800,
 value: "374.4680851063829787"
 },
-{
+wr1: {
 name: "Amari Cooper",
 id: "2756",
 position: "WR",
@@ -31,23 +31,23 @@ ptscalc: "18.97",
 salary: 6600,
 value: "347.9177648919346336"
 },
-{
+wr2: {
 name: "Stefon Diggs",
 id: "2794",
 position: "WR",
-ptscalc: "19.85",
+ptscalc: "19.82",
 salary: 7700,
-value: "387.9093198992443325"
+value: "388.4964682139253280"
 },
-{
+wr3: {
 name: "Julian Edelman",
 id: "832",
 position: "WR",
-ptscalc: "17.63",
+ptscalc: "17.60",
 salary: 7200,
-value: "408.3947816222348270"
+value: "409.0909090909090909"
 },
-{
+te: {
 name: "Eric Ebron",
 id: "2587",
 position: "TE",
@@ -55,7 +55,7 @@ ptscalc: "16.63",
 salary: 6500,
 value: "390.8598917618761275"
 },
-{
+flex: {
 name: "Sterling Shepard",
 id: "3042",
 position: "WR",
@@ -63,12 +63,14 @@ ptscalc: "14.21",
 salary: 5200,
 value: "365.9394792399718508"
 },
-{
+def: {
 name: "Minnesota Vikings",
 id: "1040",
 position: "DEF",
 ptscalc: "7.70",
 salary: 3900,
 value: "506.4935064935064935"
+},
+pts: 157.57
 }
 ]

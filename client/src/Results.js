@@ -70,6 +70,27 @@ class Results extends React.Component {
       });
   };
 
+  getFResults = () => {
+    this.setState({
+      loading: true
+    });
+    const url = "http://localhost:5001/frresults";
+    let totalPts = 0;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(results => {
+        results.map(result => {
+          totalPts += parseFloat(result.ptscalc);
+        });
+        this.setState({
+          totalPts,
+          results,
+          loading: false
+        });
+      });
+  };
+
   clearResults = () => {
     this.setState({
       totalPts: 0,
@@ -95,7 +116,10 @@ class Results extends React.Component {
           >
             Single Game Results
           </button>
-          <button className="btn btn-primary mt-5" onClick={this.getLGResults}>
+          <button
+            className="btn btn-primary mt-5 mr-2"
+            onClick={this.getLGResults}
+          >
             Late Game Results
           </button>
           <button className="btn btn-primary mt-5" onClick={this.getFResults}>
